@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Convertor {
-    public class DeconversionData {
+    public class DeconversionDataLive {
         public bool Success { get; set; }
         public string Terms { get; set; }
         public string Privacy { get; set; }

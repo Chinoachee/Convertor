@@ -11,6 +11,9 @@ namespace Convertor {
     internal class Program {
         static async Task Main(string[] args) {
             string result;
+            result = await Convertor.Convert("r",200);
+            Console.WriteLine(result);
+            /*
             while(true) {
             Console.Clear();
             Console.WriteLine($"1)Курс доллара к евро");
@@ -64,25 +67,8 @@ namespace Convertor {
                 break;
             }
             }
+             */
         }
-        /*
-        static async Task Request() {
-            string apiKey = "7b3d2592ff63cfe17482338f63ceee87";
-            string apiUrl = "http://api.currencylayer.com/live?access_key=7b3d2592ff63cfe17482338f63ceee87";
-            using(HttpClient client = new HttpClient()) {
-                client.DefaultRequestHeaders.Add("Autorization",$"Bearer{apiKey}");
-                HttpResponseMessage response = await client.GetAsync(apiUrl);
-                if(response.IsSuccessStatusCode) {
-                    string responseData = await response.Content.ReadAsStringAsync();
-                    Console.Write(responseData);
-                } else {
-                    Console.WriteLine($"Ошибка: {response.StatusCode}");
-                }
-            }
-        }
-        static void Main() {
-            Request();
-        }
-        */
+
     }
 }

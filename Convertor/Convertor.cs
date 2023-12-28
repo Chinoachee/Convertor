@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 namespace Convertor {
     internal class Convertor {
-        private static string accessKey = "7b3d2592ff63cfe17482338f63ceee87";
-        private static string apiUrl = "http://apilayer.net/api/live";
+        private static string AccessKey = "7b3d2592ff63cfe17482338f63ceee87";
+        private readonly static string ApiLive = "http://apilayer.net/api/live";
+        private readonly static string ApiConvert = "http://api.currencylayer.com/convert";
         public static async Task<string> GetVal(string valute) {
-        string queryParams = $"?access_key={accessKey}&currencies={valute}&source=USD&format=1";
+        string queryParams = $"?access_key={AccessKey}&currencies={valute}&source=USD&format=1";
             using (HttpClient client = new HttpClient())
                 {
-                HttpResponseMessage responseMessage = await client.GetAsync(apiUrl + queryParams);
+                HttpResponseMessage responseMessage = await client.GetAsync(ApiLive + queryParams);
                 if(responseMessage.IsSuccessStatusCode)
                 {
                     string responseData = await responseMessage.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<DeconversionData>(responseData);
+                    var data = JsonConvert.DeserializeObject<DeconversionDataLive>(responseData);
                     switch(valute)
                         {
                         case "EUR":
@@ -37,6 +38,23 @@ namespace Convertor {
                 else
                 {
                     return "Error Message";
+                }
+            }
+        }
+        public static async Task<string> Convert(string valute,double amount) {
+            string queryConvert = $"?access_key={AccessKey}&from=USD&to={valute}&amount={amount}&format=1";
+            using (HttpClient client = new HttpClient()) {
+                HttpResponseMessage responseMessage = await client.GetAsync(ApiConvert + queryConvert);
+                if(responseMessage.IsSuccessStatusCode) {
+                    string responseData = await responseMessage.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<DeconversionDataConvert>(responseData);
+                    if(data.Success) {
+                        return data.Result.ToString();
+                    } else {
+                        return $"Error: {data.Success.ToString()}";
+                    }
+                } else {
+                    return "Error message";
                 }
             }
         }
